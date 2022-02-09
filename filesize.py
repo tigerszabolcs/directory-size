@@ -6,18 +6,27 @@ maxsize = 0
 accuraccy = 10000000
 maxfile = ""
 history = []
+totalSize = 0
 class bigFiles:
     def __init__(self, fName, fSize) -> None:
         self.fName = fName
         self.fSize = fSize
         pass
 
+def ConvertSize(size,measure):
+    if measure == "MB":
+        return size / (1024*1024)
+    elif measure == "GB":
+        return size/ (1024*1024*1024)
+    else:
+        return size
+
 for subdir, dirs, files in os.walk(rootdir):
     for file in files:
         fpath = os.path.join(subdir, file)
         filesize = os.path.getsize(fpath)
-        if not os.path.islink(file_path):
-            total_size += os.path.getsize(file_path)
+        if not os.path.islink(fpath):
+            totalSize += os.path.getsize(fpath)
         #if (filesize > maxsize) and (filesize > 10000000):
         #   maxsize = filesize            
         #  maxfile = fpath
@@ -30,3 +39,4 @@ for subdir, dirs, files in os.walk(rootdir):
 # print("Legnagyobb file: ", maxfile, " " , "mérete: " , maxsize )
 # for x in history:
 #    print(x.fSize, x.fName)
+print("size in MB: ", int(ConvertSize(totalSize,"MB")), "|| size in GB: ", int(ConvertSize(totalSize,"GB")), sep=' ') 
