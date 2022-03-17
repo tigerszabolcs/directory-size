@@ -26,18 +26,30 @@ def ConvertSize(size,measure):
 
 def calculateSizeOfDir(rootDir):
     rootdir = rootDir
-
+    max = 0
     totalSize = 0
     for subdir, dirs, files in os.walk(rootdir):
         for file in files:
             fpath = os.path.join(subdir, file)
+            cFileSize = os.path.getsize(fpath)
+            if cFileSize > max:
+                max = cFileSize
             if not os.path.islink(fpath):
-                totalSize += os.path.getsize(fpath)
+                totalSize += cFileSize
             continue
     # print("Legnagyobb file: ", maxfile, " " , "mérete: " , maxsize )
     # for x in history:
     #    print(x.fSize, x.fName)
     print("size in MB: ", int(ConvertSize(totalSize,"MB")), "|| size in GB: ", int(ConvertSize(totalSize,"GB")), sep=' ') 
-    return totalSize()
+    currentDir = dirSizes()
+    currentDir.dirPath = rootDir
+    currentDir.dirSize = totalSize
+    currentDir.lFile = max
+    return currentDir
 
+def main():
+    allDir = []
+    allDir.append(calculateSizeOfDir("C:\Games"))
 
+if __name__ =="__main__":
+    main()
